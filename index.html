@@ -1,0 +1,237 @@
+<html>
+<head>
+<link rel = "stylesheet" type = "text/css" href = "style.css">
+</head>
+<body>
+<canvas id = "ctx"></canvas>
+</body>
+<script>
+	var grid = {};
+	var shuffleGrid = [1,2,3,4,5,6,7,8,9];
+	var c = document.getElementById('ctx');
+	var solved = false;
+	var solvable = true;
+	c.width = window.innerWidth;
+	c.height = window.innerHeight;
+	var ctx = c.getContext('2d');
+	initialize();
+	function initialize() {
+	  initializeGrid();
+	  ctx.font = '30pt Calibri';
+	  //BUILD THE SQUARES
+	  ctx.fillStyle = 'black';
+	  ctx.rect(60,40,180,180);
+	  ctx.stroke();
+	  ctx.fillStyle = "#808080";
+	  ctx.rect(60,40,60,540);
+	  ctx.rect(120,40,60,540);
+	  ctx.rect(180,40,60,540);
+	  ctx.rect(240,40,60,540);
+	  ctx.rect(300,40,60,540);
+	  ctx.rect(360,40,60,540);
+	  ctx.rect(420,40,60,540);
+	  ctx.rect(480,40,60,540);
+	  ctx.rect(540,40,60,540);
+
+	  ctx.rect(60,40,540,60);
+	  ctx.rect(60,100,540,60);
+	  ctx.rect(60,160,540,60);
+	  ctx.rect(60,220,540,60);
+	  ctx.rect(60,280,540,60);
+	  ctx.rect(60,340,540,60);
+	  ctx.rect(60,400,540,60);
+	  ctx.rect(60,460,540,60);
+	  ctx.rect(60,520,540,60);
+
+	  ctx.stroke();
+	  ctx.fillStyle = 'black';
+	  ctx.rect(240,40,180,180);
+	  ctx.stroke();
+	  ctx.fillStyle = 'black';
+	  ctx.rect(420,40,180,180);
+	  ctx.stroke();
+	  ctx.fillStyle = 'black';
+	  ctx.rect(60,220,180,180);
+	  ctx.stroke();
+	  ctx.fillStyle = 'black';
+	  ctx.rect(240,220,180,180);
+	  ctx.stroke();
+	  ctx.fillStyle = 'black';
+	  ctx.rect(420,220,180,180);
+	  ctx.stroke();
+	  ctx.fillStyle = 'black';
+	  ctx.rect(60,400,180,180);
+	  ctx.stroke();
+	  ctx.fillStyle = 'black';
+	  ctx.rect(240,400,180,180);
+	  ctx.stroke();
+	  ctx.fillStyle = 'black';
+	  ctx.rect(420,400,180,180);
+	  ctx.stroke();
+
+	  ctx.fillStyle = 'black';
+	  ctx.rect(640,40,180,180);
+	  ctx.stroke();
+	  ctx.fillStyle = 'black';
+	  ctx.rect(820,40,180,180);
+	  ctx.stroke();
+	  ctx.fillStyle = 'black';
+	  ctx.rect(1000,40,180,180);
+	  ctx.stroke();
+	  ctx.fillStyle = 'black';
+	  ctx.rect(640,220,180,180);
+	  ctx.stroke();
+	  ctx.fillStyle = 'black';
+	  ctx.rect(820,220,180,180);
+	  ctx.stroke();
+	  ctx.fillStyle = 'black';
+	  ctx.rect(1000,220,180,180);
+	  ctx.stroke();
+	  ctx.fillStyle = 'black';
+	  ctx.rect(640,400,180,180);
+	  ctx.stroke();
+	  ctx.fillStyle = 'black';
+	  ctx.rect(820,400,180,180);
+	  ctx.stroke();
+	  ctx.fillStyle = 'black';
+	  ctx.rect(1000,400,180,180);
+	  ctx.stroke();
+	  //FILL IN THE SQUARES
+	  generateKnownLetterGrid();
+	  shuffle(shuffleGrid);
+	  assignValues();
+	  fillGrid();
+	  for(var i=0; i<54; i++) {
+		removeCell(Math.floor(Math.random()*80));
+	  }
+	  fillOtherGrid();
+
+
+	}
+	  function initializeGrid() {
+		for(var i=0; i<81; i++) {
+		  grid[i] = 0;
+		}
+	  }
+	  function fillGrid() {
+		ctx.fillStyle = 'black';
+		for(var i=0; i<9; i++) {
+		  for(var j=0; j<9; j++) {
+			if(grid[(i*9)+j] == 0) {
+			  ctx.fillText(" ", (80+(60*j)), (80+(60*i)));
+			}
+			else {
+			  ctx.fillText(grid[(i*9)+j], (80+(60*j)), (80+(60*i)));
+			}
+		  }
+		}
+	  }
+
+	  function fillOtherGrid() {
+		ctx.fillstyle = 'black';
+		for(var i=0; i<9; i++) {
+		  for(var j=0; j<9; j++) {
+			if(grid[(i*9)+j] == 0) {
+			  ctx.fillText(" ", (660+(60*j)), (80+(60*i)));
+			}
+			else {
+			  ctx.fillText(grid[(i*9)+j], (660+(60*j)), (80+(60*i)));
+			}
+		  }
+		}
+	  }
+	  function generateKnownGrid() {
+		for(var i=0; i<9; i++) {
+		  for(var j=0; j<9; j++) {
+			grid[(i*9)+j] = Math.floor((( ((i)*3) + ((i)/3) + (j)) % (9)) + 1);
+		  }
+		}
+	  }
+	  function generateKnownLetterGrid() {
+		for(var i=0; i<9; i++) {
+		  for(var j=0; j<9; j++) {
+			var n = Math.floor((( ((i)*3) + ((i)/3) + (j)) % (9)) + 1);
+			if(n==1) {
+			  grid[(i*9)+j] = 'A';
+			}
+			if(n==2) {
+			  grid[(i*9)+j] = 'B';
+			}
+			if(n==3) {
+			  grid[(i*9)+j] = 'C';
+			}
+			if(n==4) {
+			  grid[(i*9)+j] = 'D';
+			}
+			if(n==5) {
+			  grid[(i*9)+j] = 'E';
+			}
+			if(n==6) {
+			  grid[(i*9)+j] = 'F';
+			}
+			if(n==7) {
+			  grid[(i*9)+j] = 'G';
+			}
+			if(n==8) {
+			  grid[(i*9)+j] = 'H';
+			}
+			if(n==9) {
+			  grid[(i*9)+j] = 'I';
+			}
+		  }
+		}
+	  }
+	  function shuffle(array) {
+		for(var i=array.length -1; i>0; i--) {
+		  var j = Math.floor(Math.random()*(i+1));
+		  var temp = array[i];
+		  array[i] = array[j];
+		  array[j] = temp;
+		}
+		console.log(array);
+		return array;
+	  }
+	  function assignValues() {
+		for(var i=0; i<9; i++) {
+		  for(var j=0; j<9; j++) {
+			if(grid[(i*9)+j] == 'A') {
+			  grid[(i*9)+j] = shuffleGrid[0];
+			}
+			if(grid[(i*9)+j] == 'B') {
+			  grid[(i*9)+j] = shuffleGrid[1];
+			}
+			if(grid[(i*9)+j] == 'C') {
+			  grid[(i*9)+j] = shuffleGrid[2];
+			}
+			if(grid[(i*9)+j] == 'D') {
+			  grid[(i*9)+j] = shuffleGrid[3];
+			}
+			if(grid[(i*9)+j] == 'E') {
+			  grid[(i*9)+j] = shuffleGrid[4];
+			}
+			if(grid[(i*9)+j] == 'F') {
+			  grid[(i*9)+j] = shuffleGrid[5];
+			}
+			if(grid[(i*9)+j] == 'G') {
+			  grid[(i*9)+j] = shuffleGrid[6];
+			}
+			if(grid[(i*9)+j] == 'H') {
+			  grid[(i*9)+j] = shuffleGrid[7];
+			}
+			if(grid[(i*9)+j] == 'I') {
+			  grid[(i*9)+j] = shuffleGrid[8];
+			}
+		  }
+		}
+	  }
+	function removeCell(cell) {
+	  if(grid[cell]==0) {
+		removeCell(Math.floor(Math.random()*80));
+	  }
+	  else {
+		grid[cell]=0;
+	  }
+	}
+</script>
+
+</html>
